@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ask Her Out</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+      }
+
+      body {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffe5e5;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        gap: 20px;
+        max-width: 500px;
+        margin: 20px;
+      }
+
+      .tenor-gif-embed {
+        max-width: 200px;
+        display: none;
+      }
+
+      .tenor-gif-embed.active {
+        display: flex;
+      }
+
+      .container .btn {
+        display: flex;
+        gap: 25px;
+      }
+
+      .btn a {
+        text-decoration: none;
+        color: #111;
+        background: #fff;
+        padding: 10px 25px;
+        border-radius: 8px;
+        box-shadow: 0.5rem 1rem 3rem rgba(0, 0, 0, 0.3);
+      }
+
+      .btn a:hover {
+        background-color: #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Loading all the images -->
+      <div
+        id="gif-container1"
+        class="tenor-gif-embed"
+        data-postid="22885016"
+        data-share-method="host"
+        data-aspect-ratio="1.04918"
+        data-width="100%"
+      ></div>
+      <div
+        id="gif-container2"
+        class="tenor-gif-embed"
+        data-postid="22050818"
+        data-share-method="host"
+        data-aspect-ratio="1"
+        data-width="100%"
+      ></div>
+      <div
+        id="gif-container3"
+        class="tenor-gif-embed"
+        data-postid="15195810"
+        data-share-method="host"
+        data-aspect-ratio="1"
+        data-width="100%"
+      ></div>
+      <div
+        id="gif-container4"
+        class="tenor-gif-embed"
+        data-postid="15974530976611222074"
+        data-share-method="host"
+        data-aspect-ratio="1.26923"
+        data-width="100%"
+      ></div>
+      <div
+        id="gif-container5"
+        class="tenor-gif-embed"
+        data-postid="253027946666209433"
+        data-share-method="host"
+        data-aspect-ratio="1.37853"
+        data-width="100%"
+      ></div>
+
+      <h1 id="question">Question</h1>
+      <p id="message">message</p>
+      <div class="btn">
+        <a href="#" id="yes-btn">Yes</a>
+        <a href="#" id="no-btn">No</a>
+      </div>
+    </div>
+
+    <script async src="https://tenor.com/embed.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let currentIndex = 0;
+
+        const data = [
+          {
+            containerId: "gif-container1",
+            question: "DO you love me? 🤗",
+            message: "Main already tera hoon, now and always. 💫",
+            nextScenarioYes: 4,
+            nextScenarioNo: 1,
+          },
+          {
+            containerId: "gif-container2",
+            question: "Soch le ache se! 🙄",
+            message: "itte jldi nhi mtt bol🙄",
+            nextScenarioYes: 4,
+            nextScenarioNo: 2,
+          },
+          {
+            containerId: "gif-container3",
+            question: "Ek aur baar Soch le! 😣",
+            message: "kyu aisa kr rahi hai 😣",
+            nextScenarioYes: 4,
+            nextScenarioNo: 3,
+          },
+          {
+            containerId: "gif-container4",
+            question: "Manja na! Kitna bhav khaegi 😭",
+            message: "bht glt baat hai 😭",
+            nextScenarioYes: 4,
+            nextScenarioNo: -1,
+          },
+          {
+            containerId: "gif-container5",
+            question: "Hehehehe, I knew it! 😘",
+            message: "Chal, chai peene chale 🍵",
+            nextScenarioYes: -1,
+            nextScenarioNo: -1,
+          },
+        ];
+
+        const questionElem = document.getElementById("question");
+        const messageElem = document.getElementById("message");
+        const yesBtn = document.getElementById("yes-btn");
+        const noBtn = document.getElementById("no-btn");
+
+        function updatePage(index) {
+          const {
+            containerId,
+            question,
+            message,
+            nextScenarioYes,
+            nextScenarioNo,
+          } = data[index];
+
+          questionElem.textContent = question;
+          messageElem.textContent = message;
+          toggleGif(containerId);
+
+          yesBtn.onclick =
+            nextScenarioYes !== -1 ? () => handleClick(nextScenarioYes) : null;
+
+          // Hide the "No" button when currentIndex is 4
+          if (index === 4) {
+            noBtn.style.display = "none"; // Hide "No" button
+            yesBtn.textContent = "Chall......";
+            yesBtn.onclick = function () {
+              window.location.href = "<your-link-here>"; // Redirect when clicked
+            };
+            noBtn.removeEventListener("mouseenter", moveRandomNoBtn); // Remove event listener if needed
+          } else if (index === 3) {
+            noBtn.style.display = "inline-block"; // Show "No" button
+            noBtn.addEventListener("mouseenter", moveRandomNoBtn); // Reattach event listener if needed
+          }
+
+          noBtn.onclick =
+            nextScenarioNo !== -1 ? () => handleClick(nextScenarioNo) : null;
+        }
+
+        function toggleGif(activeId) {
+          data.forEach(({ containerId }) => {
+            const container = document.getElementById(containerId);
+            container.classList.toggle("active", containerId === activeId);
+          });
+        }
+
+        function handleClick(nextIndex) {
+          if (nextIndex !== -1) {
+            currentIndex = nextIndex;
+            updatePage(currentIndex);
+          } else {
+            alert("End of the flow!");
+          }
+        }
+
+        function moveRandomNoBtn(e) {
+          const elm = e.target;
+          elm.style.position = "absolute";
+          elm.style.top = Math.floor(Math.random() * 90 + 5) + "%";
+          elm.style.left = Math.floor(Math.random() * 90 + 5) + "%";
+        }
+
+        updatePage(currentIndex);
+      });
+    </script>
+  </body>
+</html>
